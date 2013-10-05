@@ -1,44 +1,72 @@
+var _ = require('underscore');
+
 var monitor = function(config) {
 
-    var httpRequestor = require('./httpRequestor.js');
-    var express = require('express');
-    var app = express();
-    var results = {};
+    var launch = function() {
+        var httpRequestor = require('./httpRequestor.js');
+        var express = require('express');
+        var app = express();
+        var results = {};
 
-    app.configure(function() {
-        app.use(app.router);
-        app.use(express.static( __dirname+'/../www'));
-    });
-    app.listen(config.server.port);
-    app.get('/api/results', function(req, res) {
-        console.log('Serving', req.route.path);
-        res.setHeader('content-type', 'application/json');
-        res.send(results);
-    });
+        app.configure(function() {
+            app.use(app.router);
+            app.use(express.static( __dirname+'/../www'));
+        });
+        app.listen(config.server.port);
+        app.get('/api/results', function(req, res) {
+            console.log('Serving', req.route.path);
+            res.setHeader('content-type', 'application/json');
+            res.send(results);
+        });
 
-    console.log('Monitor server listening on '+config.server.port);
+        console.log('Monitor server listening on '+config.server.port);
 
 
-    var monitorServer = function(target) {
-        httpRequestor(target.url, checkServer);
+        var monitorServer = function(target) {
+            httpRequestor(target.url, checkServer);
+        };
+
+        var checkServer = function(url, statusCode, response) {
+            console.log('Response from', url, statusCode);
+            results[url].push({ 'timestamp': new Date().getTime(), 'status': statusCode });
+        };
+
+        config.targets.forEach(function(target) {
+            console.log('Monitoring', target.name, 'on', target.url);
+            results[target.url] = [];
+            setInterval(monitorServer.bind(this, target), config.server.checkInterval);
+        });
+
+        var checkIfHasBeenUp = function() {
+            _.each(results, function(result, key) {
+                var from = new Date().getTime() - config.server.emailInterval;
+                var status = hasBeenUp(result, from, config.server.flapping);
+                console.log('checking', key, ' if was up last', parseInt(config.server.flapping/3600, 10), 'minutes', status);
+            });
+        };
+
+        setInterval(checkIfHasBeenUp, config.server.emailInterval);
     };
 
-    var checkServer = function(url, statusCode, response) {
-        console.log('Response for', url, statusCode);
-        results[url][new Date().getTime()] = statusCode;
+    var hasBeenUp = function(values, from, maxfails) {
+        var filteredList = _.filter(values, function(item) {
+            return item.timestamp > from;
+        });
+        var fails = 0;
+        for (var i in filteredList) {
+            var item = filteredList[i];
+            fails = (item.status !== 200) ? ++fails : 0;
+            if (fails > maxfails) {
+                return false;
+            }
+        }
+        return true;
     };
 
-    config.targets.forEach(function(target) {
-        console.log('Monitoring', target.name, 'on', target.url);
-        results[target.url] = {};
-        setInterval(monitorServer.bind(this, target), config.server.interval);
-    });
+    return {
+        'launch': launch,
+        'hasBeenUp': hasBeenUp
+    };
 };
 
-
-var fs = require('fs');                                                                                                                 
-fs.readFile(__dirname+'/config.json', 'utf8', function (err, data) {
-    if (err) { return console.log('No config file found :', err); }
-    monitor(JSON.parse(data));
-});
-
+module.exports = monitor;

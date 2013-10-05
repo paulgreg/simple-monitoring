@@ -1,14 +1,18 @@
 {
-    "name": "simple-monitor",
-    "version": "0.1.0",
-    "description": "A simple monitoring tool",
-    "author": "Greg",
-    "dependencies": {
-        "express": "3.2.x",
-        "forever": "0.10.x"
-    },
-    "devDependencies": {
-        "nodemon": "0.7.x"
-    },
-    "engine": "node >= 0.10.x"
+  "name": "simple-monitor",
+  "version": "0.1.0",
+  "description": "A simple monitoring tool",
+  "author": "Greg",
+  "dependencies": {
+    "express": "3.2.x",
+    "forever": "0.10.x",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "0.7.x",
+    "jasmine-node": "1.8.x",
+    "mocha": "1.0.1",
+    "should": ">= 0.6.0"
+  },
+  "engine": "node >= 0.10.x"
 }
