@@ -23,25 +23,25 @@ var monitor = function(config) {
 
 
         var monitorServer = function(target) {
-            httpRequestor(target.url, checkServer);
+            httpRequestor(target.name, target.url, checkServer);
             setTimeout(monitorServer.bind(this, target), config.server.checkInterval);
         };
 
-        var checkServer = function(url, statusCode, response) {
+        var checkServer = function(name, url, statusCode, response) {
             console.log('Response from', url, statusCode);
-            results[url].push({ 'timestamp': new Date().getTime(), 'status': statusCode });
+            results[name].results.push({ 'timestamp': new Date().getTime(), 'status': statusCode });
         };
 
         config.targets.forEach(function(target) {
             console.log('Monitoring', target.name, 'on', target.url);
-            results[target.url] = [];
+            results[target.name] = { 'url': target.url, 'results': [] };
             monitorServer(target);
         });
 
         var checkIfHasBeenUp = function() {
-            _.each(results, function(result, key) {
+            _.each(results, function(target, key) {
                 var from = new Date().getTime() - config.server.emailInterval;
-                var status = hasBeenUp(result, from, config.server.flapping);
+                var status = hasBeenUp(target.results, from, config.server.flapping);
                 console.log(key, 'was', (status ? 'up' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
                 if (status === false) {
                     console.log(key, 'was DOWN !');

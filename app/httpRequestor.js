@@ -1,4 +1,4 @@
-var httpRequestor = function(url, callback) {
+var httpRequestor = function(name, url, callback) {
 
     if (!url) {
         console.log('Bad httpRequestor configuration');
@@ -16,10 +16,10 @@ var httpRequestor = function(url, callback) {
         res.on('data', function(chunk) {
             response += chunk;
         }).on('end', function() {
-            callback(url, res.statusCode, response);
+            callback(name, url, res.statusCode, response);
         });
     }).on('error', function(err) {
-        callback(url, 500, 'connection error');
+        callback(name, url, 500, 'connection error');
     }).end();
 };
 
