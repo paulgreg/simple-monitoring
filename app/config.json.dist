@@ -1,9 +1,10 @@
 {
     "server": {
         "port": 8000,
-        "checkInterval": 30000,         // Interval between http requests
-        "emailInterval": 120000,        // Interval between checks if targets were up or down
-        "flapping": 2                   // Number of consecutive failure before alerting
+        "checkInterval": 30000,         // Interval, in ms, between http requests
+        "emailInterval": 120000,        // Interval, in ms, between checks if targets were up or down
+        "flapping": 2,                  // Number of consecutive failure before alerting
+        "keepTime": 120001              // Number, in ms, of results to keep in memory (and served from /api/uptimes)
     },
     "targets": [
         { "name": "Google", "url": "https://www.google.fr" },

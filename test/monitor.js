@@ -2,7 +2,7 @@ var should = require('should');
 var monitor = require('../app/monitor')();
 
 describe('Monitor', function() {
-    describe('#isUp since last hour', function() {
+    describe('#hasBeenUp', function() {
 
         it('should say YES', function() {
             var data = [
@@ -48,6 +48,28 @@ describe('Monitor', function() {
 
             var answer = monitor.hasBeenUp(data, 0, 2);
             answer.should.be.ok;
+        });
+    });
+
+    describe('#cleanupResults', function() {
+        it('should remove old values', function() {
+            var data = {
+                "test": {
+                    "results": [
+                        { "timestamp": 1000, "status": 200 },
+                        { "timestamp": 2000, "status": 200 },
+                        { "timestamp": 3000, "status": 404 },
+                        { "timestamp": 4000, "status": 404 },
+                        { "timestamp": 5000, "status": 200 }
+                    ]
+                }
+            };
+
+            monitor.cleanupResults(data, 2500);
+            data.test.results.length.should.eql(3);
+            data.test.results[0].timestamp.should.eql(3000);
+            data.test.results[1].timestamp.should.eql(4000);
+            data.test.results[2].timestamp.should.eql(5000);
         });
     });
 });

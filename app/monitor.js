@@ -2,6 +2,32 @@ var _ = require('underscore');
 
 var monitor = function(config) {
 
+    var cleanupResults = function(data, from) {
+        _.each(data, function(target, key) {
+            var nbValues = target.results.length;
+            var filteredList = _.filter(target.results, function(item) {
+                return item.timestamp > from;
+            });
+            data[key].results = filteredList;
+            console.log('Remove old results for', key, ':', nbValues, 'before, reduced to', filteredList.length, 'values');
+        });
+    };
+
+    var hasBeenUp = function(values, from, maxfails) {
+        var filteredList = _.filter(values, function(item) {
+            return item.timestamp > from;
+        });
+        var fails = 0;
+        for (var i in filteredList) {
+            var item = filteredList[i];
+            fails = (item.status !== 200) ? ++fails : 0;
+            if (fails > maxfails) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     var launch = function() {
         var httpRequestor = require('./httpRequestor.js');
         var express = require('express');
@@ -48,28 +74,18 @@ var monitor = function(config) {
                 }
             });
         };
-
         setInterval(checkIfHasBeenUp, config.server.emailInterval);
-    };
 
-    var hasBeenUp = function(values, from, maxfails) {
-        var filteredList = _.filter(values, function(item) {
-            return item.timestamp > from;
-        });
-        var fails = 0;
-        for (var i in filteredList) {
-            var item = filteredList[i];
-            fails = (item.status !== 200) ? ++fails : 0;
-            if (fails > maxfails) {
-                return false;
-            }
-        }
-        return true;
+        setInterval(function() {
+            var from = new Date().getTime() - config.server.keepTime;
+            cleanupResults(results, from);
+        }, config.server.keepTime);
     };
 
     return {
         'launch': launch,
-        'hasBeenUp': hasBeenUp
+        'hasBeenUp': hasBeenUp,
+        'cleanupResults': cleanupResults
     };
 };
 
