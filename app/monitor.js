@@ -13,7 +13,7 @@ var monitor = function(config) {
             app.use(express.static( __dirname+'/../www'));
         });
         app.listen(config.server.port);
-        app.get('/api/results', function(req, res) {
+        app.get('/api/uptimes', function(req, res) {
             console.log('Serving', req.route.path);
             res.setHeader('content-type', 'application/json');
             res.send(results);
@@ -24,6 +24,7 @@ var monitor = function(config) {
 
         var monitorServer = function(target) {
             httpRequestor(target.url, checkServer);
+            setTimeout(monitorServer.bind(this, target), config.server.checkInterval);
         };
 
         var checkServer = function(url, statusCode, response) {
@@ -34,14 +35,17 @@ var monitor = function(config) {
         config.targets.forEach(function(target) {
             console.log('Monitoring', target.name, 'on', target.url);
             results[target.url] = [];
-            setInterval(monitorServer.bind(this, target), config.server.checkInterval);
+            monitorServer(target);
         });
 
         var checkIfHasBeenUp = function() {
             _.each(results, function(result, key) {
                 var from = new Date().getTime() - config.server.emailInterval;
                 var status = hasBeenUp(result, from, config.server.flapping);
-                console.log('checking', key, ' if was up last', parseInt(config.server.flapping/3600, 10), 'minutes', status);
+                console.log(key, 'was', (status ? 'up' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
+                if (status === false) {
+                    console.log(key, 'was DOWN !');
+                }
             });
         };
 
