@@ -1,0 +1,12 @@
+{
+    "server": {
+        "port": 8000,
+        "checkInterval": 30000,         // Interval between http requests
+        "emailInterval": 120000,        // Interval between checks if targets were up or down
+        "flapping": 2                   // Number of consecutive failure before alerting
+    },
+    "targets": [
+        { "name": "Google", "url": "https://www.google.fr" },
+        { "name": "Mappy", "url": "http://fr.mappy.com" }
+    ]
+}
