@@ -18,6 +18,8 @@ var httpRequestor = function(url, callback) {
         }).on('end', function() {
             callback(url, res.statusCode, response);
         });
+    }).on('error', function(err) {
+        callback(url, 500, 'connection error');
     }).end();
 };
 
