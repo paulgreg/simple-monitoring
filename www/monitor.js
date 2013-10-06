@@ -15,7 +15,22 @@ var Monitor = (function(undefined) {
         var table = { 'days': days };
         return table;
     };
-    var fillTimeTable = function(timetable, uptimes) {
+    var fillTimeTable = function(config, now, timetable, uptime) {
+        var day = 86400000; // 24 * 60 * 60 * 1000;
+        _.each(uptime.results, function(result) {
+            var up = result.status === 200 ? 'up' : 'down';
+            var ts = result.timestamp;
+            var dayDiff = parseInt((now - ts) / day, 10);
+            if (dayDiff < config.server.daysToShow) {
+                var tsDate = new Date(ts);
+                var hour = tsDate.getHours();
+                var idxToRemove = (config.server.startAt) ? config.server.startAt : 0;
+                var oldStatus = timetable.days[dayDiff].hours[(hour-idxToRemove)].status;
+                if (oldStatus !== 'down') {
+                    timetable.days[dayDiff].hours[(hour-idxToRemove)].status = up;
+                }
+            }
+        });
     };
 
     var config = null;
@@ -35,9 +50,19 @@ var Monitor = (function(undefined) {
         _.each(uptimes, _.bind(function(uptime, key) {
             var timetable = buildTimeTable(this.config);
             timetable.size = size;
+
+            fillTimeTable(this.config, new Date().getTime(), timetable, uptime);
+
             var timetableHtml = tplTimetable(timetable);
             $('#'+key+' .timetable').html(timetableHtml);
         }, this));
+
+        $('.lastUpdate').html(new Date());
+
+        var renderBind = _.bind(renderTimetables, this);
+        setTimeout(function() {
+            $.get('/api/uptimes').then(renderBind);
+        }, this.config.server.checkInterval);
     };
 
     var renderPage = function(config) {

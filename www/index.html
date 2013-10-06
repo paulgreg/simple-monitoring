@@ -8,6 +8,7 @@
     </head>
     <body>
         <h1>Monitoring</h1>
+        <span class="lastUpdate"></span>
     </body>
     <script type="text/template" id="tpl-target">
         <section id="<%= name %>">
@@ -18,9 +19,9 @@
     <script type="text/template" id="tpl-timetable">
         <% _.each(days, function(day, idx) { %>
         <ul><li class="day">
-            <% if (days.length === idx+1) { %>
+            <% if (idx === 0) { %>
                 Today
-            <% } else if (days.length === idx+2) { %>
+            <% } else if (idx === 1) { %>
                 Yesterday
             <% } else { %>
                 Day before
