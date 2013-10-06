@@ -49,7 +49,14 @@ var monitor = function(config) {
 
 
         var monitorServer = function(target) {
-            httpRequestor(target.name, target.url, checkServer);
+            var shouldDoReq = true;
+            if (config.server.startAt && config.server.stopAt) {
+                var hour = new Date().getHours();
+                shouldDoReq = hour > config.server.startAt && hour < config.server.stopAt;
+            }
+            if (shouldDoReq) {
+                httpRequestor(target.name, target.url, checkServer);
+            }
             setTimeout(monitorServer.bind(this, target), config.server.checkInterval);
         };
 

@@ -4,7 +4,9 @@
         "checkInterval": 30000,         // Interval, in ms, between http requests
         "emailInterval": 120000,        // Interval, in ms, between checks if targets were up or down
         "flapping": 2,                  // Number of consecutive failure before alerting
-        "keepTime": 120001              // Number, in ms, of results to keep in memory (and served from /api/uptimes)
+        "keepTime": 120001,             // Number, in ms, of results to keep in memory (and served from /api/uptimes)
+        "startAt": 8,                   // Optional field : time when monitoring starts
+        "stopAt": 20                    // Optional field : time when monitoring stops
     },
     "targets": [
         { "name": "Google", "url": "https://www.google.fr" },
