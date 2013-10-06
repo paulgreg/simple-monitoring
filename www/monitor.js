@@ -15,13 +15,17 @@ var Monitor = (function(undefined) {
         var table = { 'days': days };
         return table;
     };
+    var fillTimeTable = function(timetable, uptimes) {
+    };
 
     var config = null;
 
-    var $tplTarget = $('#tpl-target');
-    var tplTarget = _.template($tplTarget.text());
-    var $tplTimetable = $('#tpl-timetable');
-    var tplTimetable = _.template($tplTimetable.text());
+    try {
+        var $tplTarget = $('#tpl-target');
+        var tplTarget = _.template($tplTarget.text());
+        var $tplTimetable = $('#tpl-timetable');
+        var tplTimetable = _.template($tplTimetable.text());
+    } catch(e) {}
 
     var renderTimetables = function(uptimes) {
 
@@ -52,6 +56,7 @@ var Monitor = (function(undefined) {
 
     return {
         'buildTimeTable': buildTimeTable,
+        'fillTimeTable': fillTimeTable,
         'launch': launch
     };
 })();
