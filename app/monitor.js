@@ -82,9 +82,10 @@ var monitor = function(config) {
             _.each(results, function(target, key) {
                 var from = new Date().getTime() - config.server.emailInterval;
                 var status = hasBeenUp(target.results, from, config.server.flapping);
-                console.log(key, 'was', (status ? 'up' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
+                console.log(key, 'was', (status ? 'UP' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
                 if (status === false) {
                     console.log(key, 'was DOWN !');
+                    // TODO : send an email (or SMS ?)
                 }
             });
         };
