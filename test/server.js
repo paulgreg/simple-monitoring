@@ -1,7 +1,7 @@
 var should = require('should');
 var monitor = require('../app/monitor')();
 
-describe('Monitor', function() {
+describe('Monitor server', function() {
     describe('#hasBeenUp', function() {
 
         it('should say YES', function() {

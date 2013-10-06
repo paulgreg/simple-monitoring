@@ -3,11 +3,39 @@
     <head>
         <title>Simple monitoring</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" media="all" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" media="all" type="text/css" href="css/monitor.css" />
     </head>
     <body>
+        <h1>Monitoring</h1>
     </body>
+    <script type="text/template" id="tpl-target">
+        <section id="<%= name %>">
+            <h2><%= name %></h2>
+            <p class="timetable"></p>
+        </section>
+    </script>
+    <script type="text/template" id="tpl-timetable">
+        <% _.each(days, function(day, idx) { %>
+        <ul><li class="day">
+            <% if (days.length === idx+1) { %>
+                Today
+            <% } else if (days.length === idx+2) { %>
+                Yesterday
+            <% } else { %>
+                Day before
+            <% } %>
+            </li>
+                <% _.each(day.hours, function(hour) { %>
+                    <li class="<%= hour.status %>" style="width: <%= size %>px; height: <%= size %>px;"></li>
+                <% }); %>
+            </ul>
+        <% }); %>
+    </script>
     <script src="components/underscore/underscore.js"></script>
+    <script src="components/jquery/jquery.js"></script>
     <script src="monitor.js"></script>
+    <script>
+        Monitor.launch();
+    </script>
 </html>
