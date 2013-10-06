@@ -35,14 +35,21 @@ var monitor = function(config) {
         var results = {};
 
         app.configure(function() {
-            app.use(app.router);
             app.use(express.static( __dirname+'/../www'));
+            app.use(function(req, res, next){
+                console.log('< %s %s', req.method, req.url); // Logging all incoming request
+                next();
+            });
+            app.use(app.router);
         });
         app.listen(config.server.port);
         app.get('/api/uptimes', function(req, res) {
-            console.log('Serving', req.route.path);
             res.setHeader('content-type', 'application/json');
             res.send(results);
+        });
+        app.get('/api/config', function(req, res) {
+            res.setHeader('content-type', 'application/json');
+            res.send(config);
         });
 
         console.log('Monitor server listening on '+config.server.port);
