@@ -2,13 +2,14 @@
 
 That tool is a simple node server which checks status code (200) from some target URLs each X seconds.
 It handles flapping based on number of failures in a row (that means a single failure could be ignored if around 2 success).
-A web UI is planned (showing time table for {up/down}times) and sending an email when a host is down.
+A web UI shows last failures/success and sending email when a host is down is under way.
 
 ## Install
 
 To use it, you‘ll need to :
-  1. launch `npm install` to install dependencies,
-  2. in `app`, create a `config.json` file (copy `config.dist.json`) and adapt configuration to your needs, 
+  1. launch `npm install` to install server dependencies,
+  2. launch `bower install` to install client dependencies,
+  2. in `app`, create a `config.json` file (copy `config.json.dist`) and adapt configuration to your needs, 
   4. then launch the server with `make run`,
   5. open your browser on `http://localhost:8000/`.
 
