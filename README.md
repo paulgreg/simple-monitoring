@@ -1,8 +1,13 @@
 # A simple monitoring tool
 
-That tool is a simple node server which checks status code (200) from some target URLs each X seconds.
+That tool is a simple node server which checks status code (200) and non empty response from some target URLs each X seconds.
 It handles flapping based on number of failures in a row (that means a single failure could be ignored if around 2 success).
-A web UI shows last failures/success and sending email when a host is down is under way.
+A web UI shows each targets status (up, down, instable).
+Sending email when a host is down is under way.
+
+## Dependencies
+
+You’ll need node, npm and bower (npm install -g bower).
 
 ## Install
 
