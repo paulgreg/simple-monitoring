@@ -1,8 +1,8 @@
-body                        { margin: .5em; }
-.timetable ul               { list-style-type: none; margin: 0; padding: 0; }
-.timetable ul li            { display: inline-block; border: 1px solid black; color: white; font-size: 9px; overflow: auto; }
-.timetable ul li.day        { display: block; border: 0; font-weight: bold; width: 100%; }
-.timetable ul li.unknown    { background-color: white;  }
-.timetable ul li.up         { background-color: green;  }
-.timetable ul li.down       { background-color: red;  }
-.timetable ul li.instable   { background-color: orange;  }
+body                     { margin: .5em; }
+.timetable ul            { list-style-type: none; margin: 0; padding: 0; }
+.timetable li.day        { display: block; border: 0; font-weight: bold; color: black; width: 100%; }
+.timetable li.hour       { display: inline-block; border: 1px solid black; color: white; font-size: 9px; overflow: auto; }
+.timetable li.up         { background-color: green;  }
+.timetable li.down       { background-color: red;  }
+.timetable li.instable   { background-color: orange;  }
+.timetable li.unknown    { background-color: white;  }

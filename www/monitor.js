@@ -68,19 +68,17 @@ var Monitor = (function(undefined) {
 
     var renderTimetables = function(uptimes) {
 
-        var nbHour = (this.config.server.startAt && this.config.server.stopAt) ? this.config.server.stopAt - this.config.server.startAt : 24;
-        var size = Math.abs(($(window).width() / nbHour * 0.9).toFixed());
-
         _.each(uptimes, _.bind(function(uptime, key) {
             var timetable = buildTimeTable(this.config);
-            timetable.size = size;
 
             fillTimeTable(this.config, new Date().getTime(), timetable, uptime);
 
             var timetableHtml = tplTimetable(timetable);
             $('#'+key+' .timetable').html(timetableHtml);
+
         }, this));
 
+        resizeBoxes.call(this);
         $('.lastUpdate').html(new Date());
 
         var renderBind = _.bind(renderTimetables, this);
@@ -99,8 +97,18 @@ var Monitor = (function(undefined) {
         $.get('/api/uptimes').then(_.bind(renderTimetables, this));
     };
 
+    var resizeBoxes = function() {
+        var nbHour = (this.config.server.startAt && this.config.server.stopAt) ? this.config.server.stopAt - this.config.server.startAt : 24;
+        var size = Math.abs(($(window).width() / nbHour * 0.9).toFixed());
+        $('.timetable li.hour').css({
+            'width': size+'px',
+            'height': size+'px'
+        });
+    };
+
     var launch = function() {
         $.get('/api/config').then(_.bind(renderPage, this));
+        $(window).resize(_.bind(resizeBoxes, this));
     };
 
     return {

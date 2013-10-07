@@ -28,11 +28,10 @@
             <% } %>
             </li>
                 <% _.each(day.hours, function(hour) { %>
-                    <li class="<%= hour.status %>" style="width: <%= size %>px; height: <%= size %>px;">
-
-                    <% _.each(hour.statusCodes, function(statusCode) { %>
-                        <%= statusCode %>
-                    <% }); %>
+                    <li class="hour <%= hour.status %>">
+                        <% _.each(hour.statusCodes, function(statusCode, idx) { %>
+                            <%= statusCode %>
+                        <% }); %>
                     </li>
                 <% }); %>
             </ul>
