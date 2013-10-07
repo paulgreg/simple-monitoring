@@ -12,14 +12,14 @@ var httpRequestor = function(name, url, callback) {
     var options = { 'host': u.hostname, 'port': port, 'path': u.path, method: 'GET'};
     //if (config.username && config.password) { options.auth = config.username+':'+config.password; }
     requestor.request(options, function(res) {
-        var response = "";
+        var size= 0;
         res.on('data', function(chunk) {
-            response += chunk;
+            size += chunk.length;
         }).on('end', function() {
-            callback(name, url, res.statusCode, response);
+            callback(name, url, res.statusCode, size);
         });
     }).on('error', function(err) {
-        callback(name, url, 500, 'connection error');
+        callback(name, url, 500, 0);
     }).end();
 };
 

@@ -67,9 +67,13 @@ var monitor = function(config) {
             setTimeout(monitorServer.bind(this, target), config.server.checkInterval);
         };
 
-        var checkServer = function(name, url, statusCode, response) {
+        var checkServer = function(name, url, statusCode, size) {
             console.log('Response from', url, statusCode);
-            results[name].results.push({ 'timestamp': new Date().getTime(), 'status': statusCode });
+            var status = statusCode;
+            if (statusCode === 200 && size === 0) { // Check response size
+                status = 'empty';
+            }
+            results[name].results.push({ 'timestamp': new Date().getTime(), 'status': status });
         };
 
         config.targets.forEach(function(target) {
