@@ -1,5 +1,5 @@
 var should = require('should');
-var monitor = require('../app/monitor')();
+var monitor = require('../server/monitor')();
 
 describe('Monitor server', function() {
     describe('#hasBeenUp', function() {
