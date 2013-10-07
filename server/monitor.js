@@ -1,6 +1,8 @@
 var _ = require('underscore');
 
-var monitor = function(config) {
+var monitor = function(config, resultsFileName, persistedRresults) {
+
+    var results = persistedRresults || {};
 
     var cleanupResults = function(data, from) {
         _.each(data, function(target, key) {
@@ -32,7 +34,6 @@ var monitor = function(config) {
         var httpRequestor = require('./httpRequestor.js');
         var express = require('express');
         var app = express();
-        var results = {};
 
         app.configure(function() {
             app.use(express.static( __dirname+'/../www'));
@@ -78,7 +79,9 @@ var monitor = function(config) {
 
         config.targets.forEach(function(target) {
             console.log('Monitoring', target.name, 'on', target.url);
-            results[target.name] = { 'url': target.url, 'results': [] };
+            if (!results[target.name] || !results[target.name].url|| !results[target.name].results) {
+                results[target.name] = { 'url': target.url, 'results': [] };
+            }
             monitorServer(target);
         });
 
@@ -101,10 +104,23 @@ var monitor = function(config) {
         }, config.server.keepTime);
     };
 
+    var saveAndQuit = function() {
+        var fs = require('fs');
+        fs.writeFile(resultsFileName, JSON.stringify(results), function (err) {
+            if (err) { 
+                console.log('Error while persisting results :', err);
+            } else {
+                console.log('Results persisted on disk');
+            }
+            process.exit();
+        });
+    };
+
     return {
         'launch': launch,
         'hasBeenUp': hasBeenUp,
-        'cleanupResults': cleanupResults
+        'cleanupResults': cleanupResults,
+        'saveAndQuit': saveAndQuit
     };
 };
 
