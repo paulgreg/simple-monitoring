@@ -99,7 +99,7 @@ var Monitor = (function(undefined) {
 
     var resizeBoxes = function() {
         var nbHour = (this.config.server.startAt && this.config.server.stopAt) ? this.config.server.stopAt - this.config.server.startAt : 24;
-        var totalWidth = $(window).width() - 20 - (nbHour*4); // 20 = paddins / 4 = borders
+        var totalWidth = $(document).width() - 20 - (nbHour*4); // 20 = paddins / 4 = borders
         var elementWidth = Math.abs(totalWidth / nbHour);
         var size = elementWidth.toFixed(0);
         $('.timetable li.hour').css({ 'width': size+'px', 'height': size+'px' });

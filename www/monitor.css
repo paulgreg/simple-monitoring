@@ -1,4 +1,4 @@
-body                    { margin: 0; }
+body                    { margin: 0; overflow-y: scroll; }
 h1                      { border-bottom: 1px solid black; text-align: right; padding-right: 10px; }
 .lastUpdate             { float: right; font-size: 12px; padding-right: 10px;  }
 section                 { padding: 0 10px; margin: 25px 0 0 0; }
