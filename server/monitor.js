@@ -60,7 +60,7 @@ var monitor = function(config, resultsFileName, persistedRresults) {
             var shouldDoReq = true;
             if (config.server.startAt && config.server.stopAt) {
                 var hour = new Date().getHours();
-                shouldDoReq = hour > config.server.startAt && hour < config.server.stopAt;
+                shouldDoReq = hour >= config.server.startAt && hour < config.server.stopAt;
             }
             if (shouldDoReq) {
                 httpRequestor(target.name, target.url, checkServer);
