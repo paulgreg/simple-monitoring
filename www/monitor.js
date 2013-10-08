@@ -20,7 +20,7 @@ var Monitor = (function(undefined) {
         _.each(uptime.results, function(result) {
             var ts = result.timestamp;
             var dayDiff = parseInt((now - ts) / day, 10);
-            if (dayDiff < config.server.daysToShow) {
+            if (dayDiff < timetable.days.length) {
                 var tsDate = new Date(ts);
                 var hour = tsDate.getHours();
                 var idxToRemove = (config.server.startAt) ? config.server.startAt : 0;
