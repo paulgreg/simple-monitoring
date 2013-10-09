@@ -8,6 +8,9 @@
     "forever": "0.10.x",
     "underscore": "~1.5.2"
   },
+  "optionalDependencies": {
+      "nodemailer": "~0.5.3"
+  },
   "devDependencies": {
     "nodemon": "0.7.x",
     "jasmine-node": "1.8.x",

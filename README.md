@@ -2,8 +2,13 @@
 
 That tool is a simple node server which checks status code (200) and non empty response from some target URLs each X seconds.
 It handles flapping based on number of failures in a row (that means a single failure could be ignored if around 2 success).
-A web UI shows each targets status (up, down, instable).
-Sending email when a host is down is under way.
+
+A web UI shows each targets status :
+   - up / green
+   - down / red (flapping is reached)
+   - instable / orange (at least one error)
+
+Optionaly, simple-monitoring could send an email when a host is down.
 
 ## Dependencies
 

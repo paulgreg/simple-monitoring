@@ -4,6 +4,8 @@ var monitor = function(config, resultsFileName, persistedRresults) {
 
     var results = persistedRresults || {};
 
+    var smtpTransport; // SMTP transport in 'global' because it need to be closed on exit
+
     var cleanupResults = function(data, from) {
         _.each(data, function(target, key) {
             var nbValues = target.results.length;
@@ -29,11 +31,16 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         }
         return true;
     };
-
+    
     var launch = function() {
         var httpRequestor = require('./httpRequestor.js');
         var express = require('express');
         var app = express();
+
+        if (config.server.smtp) {
+            var nodemailer = require("nodemailer");
+            smtpTransport = nodemailer.createTransport("SMTP", config.server.smtp);
+        }
 
         app.configure(function() {
             app.use(express.compress());
@@ -48,7 +55,9 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         });
         app.get('/api/config', function(req, res) {
             res.setHeader('content-type', 'application/json');
-            res.send(config);
+            var cleanupConfig = config;
+            delete cleanupConfig.server.smtp; // Remove smtp part (with login / password)
+            res.send(cleanupConfig);
         });
 
         console.log('Monitor server listening on '+config.server.port);
@@ -88,9 +97,23 @@ var monitor = function(config, resultsFileName, persistedRresults) {
                 var from = new Date().getTime() - config.server.emailInterval;
                 var status = hasBeenUp(target.results, from, config.server.flapping);
                 console.log(key, 'was', (status ? 'UP' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
-                if (status === false) {
-                    console.log(key, 'was DOWN !');
-                    // TODO : send an email (or SMS ?)
+                if (status === false && smtpTransport && config.server.emailfrom && config.server.emailto) {
+                    var msg = target.url + " is down ✘";
+                    var mailOptions = {
+                        from: config.server.emailfrom,
+                        to: config.server.emailto,
+                        subject: msg,
+                        text: msg,
+                        html: "<b>"+msg+"</b>"
+                    };
+
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                        if(error){
+                            console.log(error);
+                        }else{
+                            console.log("Alert email sent : " + response.message);
+                        }
+                    });
                 }
             });
         };
@@ -103,6 +126,9 @@ var monitor = function(config, resultsFileName, persistedRresults) {
     };
 
     var saveAndQuit = function() {
+        if (smtpTransport) {
+            smtpTransport.close(); // shut down the connection pool, no more messages
+        }
         var fs = require('fs');
         fs.writeFile(resultsFileName, JSON.stringify(results), function (err) {
             if (err) { 
