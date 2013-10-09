@@ -36,11 +36,9 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         var app = express();
 
         app.configure(function() {
+            app.use(express.compress());
             app.use(express.static( __dirname+'/../www'));
-            app.use(function(req, res, next){
-                console.log('< %s %s', req.method, req.url); // Logging all incoming request
-                next();
-            });
+            app.use(express.logger());
             app.use(app.router);
         });
         app.listen(config.server.port);
