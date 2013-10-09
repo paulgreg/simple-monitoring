@@ -2,7 +2,7 @@ var should = require('should');
 var monitor = require('../server/monitor')();
 
 describe('Monitor server', function() {
-    describe('#hasBeenUp', function() {
+    describe('monitor.js#hasBeenUp', function() {
 
         it('should say YES', function() {
             var data = [
@@ -51,7 +51,7 @@ describe('Monitor server', function() {
         });
     });
 
-    describe('#cleanupResults', function() {
+    describe('monitor.js#cleanupResults', function() {
         it('should remove old values', function() {
             var data = {
                 "test": {
