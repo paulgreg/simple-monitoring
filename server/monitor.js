@@ -55,9 +55,7 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         });
         app.get('/api/config', function(req, res) {
             res.setHeader('content-type', 'application/json');
-            var cleanupConfig = config;
-            delete cleanupConfig.server.smtp; // Remove smtp part (with login / password)
-            res.send(cleanupConfig);
+            res.send(_.omit(config, 'server'));
         });
 
         console.log('Monitor server listening on '+config.server.port);
@@ -65,14 +63,14 @@ var monitor = function(config, resultsFileName, persistedRresults) {
 
         var monitorServer = function(target) {
             var shouldDoReq = true;
-            if (config.server.startAt && config.server.stopAt) {
+            if (config.common.startAt && config.common.stopAt) {
                 var hour = new Date().getHours();
-                shouldDoReq = hour >= config.server.startAt && hour < config.server.stopAt;
+                shouldDoReq = hour >= config.common.startAt && hour < config.common.stopAt;
             }
             if (shouldDoReq) {
                 httpRequestor(target.name, target.url, checkServer);
             }
-            setTimeout(monitorServer.bind(this, target), config.server.checkInterval);
+            setTimeout(monitorServer.bind(this, target), config.common.checkInterval);
         };
 
         var checkServer = function(name, url, statusCode, size) {
@@ -95,10 +93,10 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         var checkIfHasBeenUp = function() {
             _.each(results, function(target, key) {
                 var from = new Date().getTime() - config.server.emailInterval;
-                var status = hasBeenUp(target.results, from, config.server.flapping);
+                var status = hasBeenUp(target.results, from, config.common.flapping);
                 console.log(key, 'was', (status ? 'UP' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
                 if (status === false && smtpTransport && config.server.emailfrom && config.server.emailto) {
-                    var msg = target.url + " is down ✘";
+                    var msg = "✘ " + target.url + " is down";
                     var mailOptions = {
                         from: config.server.emailfrom,
                         to: config.server.emailto,

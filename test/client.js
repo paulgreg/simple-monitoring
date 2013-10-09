@@ -6,8 +6,10 @@ describe('Monitor client', function() {
 
         it('should returns a timetable', function() {
             var table = monitor.buildTimeTable({ 
-                'server': {
-                    'daysToShow': 4,
+                'client': {
+                    'daysToShow': 4
+                },
+                'common': {
                     'startAt': 8,
                     'stopAt': 20
                 }

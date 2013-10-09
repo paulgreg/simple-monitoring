@@ -1,9 +1,9 @@
 var Monitor = (function(undefined) {
 
     var buildTimeTable = function(config) {
-        var daysToShow  = config.server.daysToShow;
-        var startAt     = config.server.startAt ? config.server.startAt : 0;
-        var stopAt      = config.server.stopAt  ? config.server.stopAt  : 23;
+        var daysToShow  = config.client.daysToShow;
+        var startAt     = config.common.startAt ? config.common.startAt : 0;
+        var stopAt      = config.common.stopAt  ? config.common.stopAt  : 23;
         var days = [];
         for(var i = 0; i < daysToShow; i++) {
             var hours = [];
@@ -23,7 +23,7 @@ var Monitor = (function(undefined) {
             if (dayDiff < timetable.days.length) {
                 var tsDate = new Date(ts);
                 var hour = tsDate.getHours();
-                var idxToRemove = (config.server.startAt) ? config.server.startAt : 0;
+                var idxToRemove = (config.common.startAt) ? config.common.startAt : 0;
                 var cell = timetable.days[dayDiff].hours[(hour-idxToRemove)];
                 cell.statusCodes.push(result.status);
             }
@@ -40,7 +40,7 @@ var Monitor = (function(undefined) {
                         } else {
                             totalFails++;
                             previousFails++;
-                            if (previousFails >= config.server.flapping) {
+                            if (previousFails >= config.common.flapping) {
                                 moreFailsThanFlapping = true;
                             }
                         }
@@ -84,7 +84,7 @@ var Monitor = (function(undefined) {
         var renderBind = _.bind(renderTimetables, this);
         setTimeout(function() {
             $.get('/api/uptimes').then(renderBind);
-        }, this.config.server.checkInterval);
+        }, this.config.common.checkInterval);
     };
 
     var renderPage = function(config) {
@@ -98,7 +98,7 @@ var Monitor = (function(undefined) {
     };
 
     var resizeBoxes = function() {
-        var nbHour = (this.config.server.startAt && this.config.server.stopAt) ? this.config.server.stopAt - this.config.server.startAt : 24;
+        var nbHour = (this.config.common.startAt && this.config.common.stopAt) ? this.config.common.stopAt - this.config.common.startAt : 24;
         var totalWidth = $(document).width() - 20 - (nbHour*4); // 20 = paddins / 4 = borders
         var elementWidth = Math.abs(totalWidth / nbHour);
         var size = elementWidth.toFixed(0);

@@ -1,13 +1,14 @@
 {
-    "server": {
-        "port": 8000,
+    "common": {                         // Configuration shared between server and client (Web UI)
         "checkInterval": 30000,         // Interval, in ms, between http requests
-        "emailInterval": 120000,        // Interval, in ms, between checks if targets were up or down
         "flapping": 2,                  // Number of consecutive failure before alerting
+        "startAt": 8,                   // Optional field : time when monitoring starts (24 hours format)
+        "stopAt": 20                    // Optional field : time when monitoring stops (24 hours format)
+    },
+    "server": {                         // Server only configuration
+        "port": 8000,
+        "emailInterval": 120000,        // Interval, in ms, between checks if targets were up or down
         "keepTime": 120001,             // Number, in ms, of results to keep in memory (and served from /api/uptimes)
-        "daysToShow": 4,                // Number of last days to show on web page
-        "startAt": 8,                   // Optional field : time when monitoring starts
-        "stopAt": 20,                   // Optional field : time when monitoring stops
         "smtp": {                       // Optional SMTP configuration for nodemailer,
             "service": "Gmail",         // See https://github.com/andris9/Nodemailer for other options like XOAUTH2, Amazon SES, sendmail...
             "auth": {
@@ -17,6 +18,9 @@
         },
         "emailfrom": "Some User <some.user@somedomain.com>",    // Optional from and to addresses
         "emailto": "Some other User <some.user@somedomain.com>" //  to send email when service is down
+    },
+    "client": {                         // Client (Web UI) only configuration
+        "daysToShow": 4                 // Number of last days to show on web page
     },
     "targets": [
         { "name": "Google", "url": "https://www.google.fr" },
