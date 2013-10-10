@@ -1,5 +1,3 @@
-all: unit func
-
 tdd:
 	./node_modules/.bin/mocha --watch
 
