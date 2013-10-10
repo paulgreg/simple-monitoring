@@ -1,13 +1,14 @@
-body                    { margin: 0; overflow-y: scroll; }
-h1                      { border-bottom: 1px solid black; text-align: right; padding-right: 10px; }
-.lastUpdate             { float: right; font-size: 12px; padding-right: 10px;  }
-section                 { padding: 0 10px; margin: 25px 0 0 0; }
-.timetable ul           { list-style-type: none; margin: 0; padding: 0; }
-.timetable li           { vertical-align: top; }
-.timetable li.day       { display: block; border: 0; font-weight: bold; color: black; width: 100%; margin: 9px 0 3px 0; }
-.timetable li.hour      { display: inline-block; border: 1px solid black; color: white; font-size: 9px; overflow: auto; }
-.timetable li.time      { display: inline-block; color: gray; text-align: center; }
-.timetable li.up        { background-color: green;  }
-.timetable li.down      { background-color: red;  }
-.timetable li.instable  { background-color: orange;  }
-.timetable li.unknown   { background-color: white;  }
+body                        { margin: 0; overflow-y: scroll; }
+h1                          { border-bottom: 1px solid black; text-align: right; padding-right: 10px; }
+.lastUpdate                 { float: right; font-size: 12px; padding-right: 10px;  }
+section                     { padding: 0 10px; margin: 25px 0 0 0; }
+.timetable ul               { list-style-type: none; margin: 0; padding: 0; }
+.timetable li               { vertical-align: top; }
+.timetable li.day           { display: block; border: 0; font-weight: bold; color: black; width: 100%; margin: 9px 0 3px 0; }
+.timetable li.hour          { display: inline-block; border: 1px solid gray; color: white; font-size: 9px; overflow: auto; }
+.timetable li.current.hour  { border: 2px solid black; }
+.timetable li.time          { display: inline-block; color: gray; text-align: center; }
+.timetable li.up            { background-color: green;  }
+.timetable li.down          { background-color: red;  }
+.timetable li.instable      { background-color: orange;  }
+.timetable li.unknown       { background-color: white;  }

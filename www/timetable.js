@@ -1,6 +1,6 @@
 var Timetable = (function(undefined) {
 
-    var buildTimeTable = function(config) {
+    var buildTimeTable = function(config, currentHour) {
         var daysToShow  = config.client.daysToShow;
         var startAt     = config.common.startAt ? config.common.startAt : 0;
         var stopAt      = config.common.stopAt  ? config.common.stopAt  : 23;
@@ -8,7 +8,8 @@ var Timetable = (function(undefined) {
         for(var i = 0; i < daysToShow; i++) {
             var hours = [];
             for(var h = startAt; h < stopAt; h++) {
-                hours.push({ 'status': 'unknown', 'statusCodes': [] });
+                var current = currentHour === h;
+                hours.push({ 'status': 'unknown', 'statusCodes': [], 'current': current });
             }
             days.push({ 'hours': hours });
         }

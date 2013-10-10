@@ -12,7 +12,7 @@ var Monitor = (function(undefined) {
     var renderTimetables = function(uptimes) {
 
         _.each(uptimes, _.bind(function(uptime, key) {
-            var timetable = Timetable.buildTimeTable(this.config);
+            var timetable = Timetable.buildTimeTable(this.config, (new Date()).getHours());
 
             Timetable.fillTimeTable(_, this.config, new Date().getTime(), timetable, uptime);
 

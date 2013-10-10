@@ -7,25 +7,29 @@ describe('Monitor client', function() {
     describe('timetable.js#buildTimeTable', function() {
         it('should returns a timetable', function() {
 
+            var startAt = 8;
+            var currentHour = 12;
+
             // When
             var timetable = Timetable.buildTimeTable({ 
                 'client': {
                     'daysToShow': 4
                 },
                 'common': {
-                    'startAt': 8,
+                    'startAt': startAt,
                     'stopAt': 20
                 }
-            });
+            }, currentHour);
 
             // Then
             timetable.days.length.should.eql(4);
             timetable.days[0].hours.length.should.eql(12);
+            timetable.days[0].hours[0].current.should.eql(false);
+            timetable.days[0].hours[currentHour-startAt].current.should.eql(true);
         });
     });
 
 
-    
     describe('timetable.js#fillTimeTable', function() {
 
         // Given (common)
