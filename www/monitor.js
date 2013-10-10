@@ -2,12 +2,10 @@ var Monitor = (function(undefined) {
 
     var config = null;
 
-    try {
-        var $tplTarget = $('#tpl-target');
-        var tplTarget = _.template($tplTarget.text());
-        var $tplTimetable = $('#tpl-timetable');
-        var tplTimetable = _.template($tplTimetable.text());
-    } catch(e) {}
+    var $tplTarget = $('#tpl-target');
+    var tplTarget = _.template($tplTarget.text());
+    var $tplTimetable = $('#tpl-timetable');
+    var tplTimetable = _.template($tplTimetable.text());
 
     var renderTimetables = function(uptimes) {
 
