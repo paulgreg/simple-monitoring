@@ -21,10 +21,10 @@
             <% _.each(_.range(startAt, stopAt), function(i) { %>
                 <li class="time"><%= i %>:00</li>
             <% }); %>
-            <% _.each(days, function(day, idx) { %>
-                <li class="day"><% if (idx === 0) { %>Today<% } else if (idx === 1) { %>Yesterday<% } else { %>Day before<% } %></li>
+            <% _.each(days, function(day, dayIdx) { %>
+                <li class="day"><% if (dayIdx === 0) { %>Today<% } else if (dayIdx === 1) { %>Yesterday<% } else { %>Day before<% } %></li>
                 <% _.each(day.hours, function(hour) { %>
-                    <li class="hour <%= hour.current ? 'current' : ''%> <%= hour.status %>">
+                    <li class="hour <%= hour.current && dayIdx === 0 ? 'current' : ''%> <%= hour.status %>">
                         <% _.each(hour.statusCodes, function(statusCode, idx) { %>
                             <%= statusCode %>
                         <% }); %>
