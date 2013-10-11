@@ -9,7 +9,6 @@
     "server": {                         // Server only configuration
         "port": 8000,
         "emailInterval": 120000,        // Interval, in ms, between checks if targets were up or down
-        "keepTime": 120001,             // Number, in ms, of results to keep in memory (and served from /api/uptimes)
         "debug": true,                  // Optional field : show full date on /api/uptimes resource
         "smtp": {                       // Optional SMTP configuration for nodemailer,
             "service": "Gmail",         // See https://github.com/andris9/Nodemailer for other options like XOAUTH2, Amazon SES, sendmail...
