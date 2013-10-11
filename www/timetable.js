@@ -1,7 +1,7 @@
 var Timetable = (function(undefined) {
 
     var buildTimeTable = function(config, currentHour) {
-        var daysToShow  = config.client.daysToShow;
+        var daysToShow  = config.common.daysToShow;
         var startAt     = config.common.startAt ? config.common.startAt : 0;
         var stopAt      = config.common.stopAt  ? config.common.stopAt  : 23;
         var days = [];

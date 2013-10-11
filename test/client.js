@@ -12,10 +12,8 @@ describe('Monitor client', function() {
 
             // When
             var timetable = Timetable.buildTimeTable({ 
-                'client': {
-                    'daysToShow': 4
-                },
                 'common': {
+                    'daysToShow': 4,
                     'startAt': startAt,
                     'stopAt': 20
                 }

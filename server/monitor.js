@@ -122,10 +122,13 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         };
         setInterval(checkIfHasBeenUp, config.server.emailInterval);
 
+        var dayInMs = 24 * 60 * 60 * 1000;
+        var daysToShowInMs = config.common.daysToShow * dayInMs;
+
         setInterval(function() {
-            var from = new Date().getTime() - config.server.keepTime;
+            var from = new Date().getTime() - daysToShowInMs;
             cleanupResults(results, from);
-        }, config.server.keepTime);
+        }, daysToShowInMs);
     };
 
     var saveAndQuit = function() {
