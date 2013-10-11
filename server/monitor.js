@@ -79,7 +79,12 @@ var monitor = function(config, resultsFileName, persistedRresults) {
             if (statusCode === 200 && size === 0) { // Check response size
                 status = 'empty';
             }
-            results[name].results.push({ 'timestamp': new Date().getTime(), 'status': status });
+            var d = new Date();
+            var result = { 'timestamp': d.getTime(), 'status': status };
+            if (config.server.debug) {
+                result.date = d.toString();
+            }
+            results[name].results.push(result);
         };
 
         config.targets.forEach(function(target) {
