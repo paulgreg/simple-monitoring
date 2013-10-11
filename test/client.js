@@ -5,7 +5,22 @@ var Timetable = require('../www/timetable');
 describe('Monitor client', function() {
 
     describe('timetable.js#buildTimeTable', function() {
+
         it('should returns a timetable', function() {
+
+            // When
+            var timetable = Timetable.buildTimeTable({ 
+                'common': {
+                    'daysToShow': 1
+                }
+            }, 12);
+
+            // Then
+            timetable.days.length.should.eql(1);
+            timetable.days[0].hours.length.should.eql(24);
+        });
+
+        it('should returns a timetable with startAt/stopAt parameters', function() {
 
             var startAt = 8;
             var currentHour = 12;
@@ -25,6 +40,7 @@ describe('Monitor client', function() {
             timetable.days[0].hours[0].current.should.eql(false);
             timetable.days[0].hours[currentHour-startAt].current.should.eql(true);
         });
+
     });
 
 
