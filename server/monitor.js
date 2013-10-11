@@ -120,7 +120,9 @@ var monitor = function(config, resultsFileName, persistedRresults) {
                 }
             });
         };
-        setInterval(checkIfHasBeenUp, config.server.emailInterval);
+        if (config.server.emailInterval) {
+            setInterval(checkIfHasBeenUp, config.server.emailInterval);
+        }
 
         var dayInMs = 24 * 60 * 60 * 1000;
         var daysToShowInMs = config.common.daysToShow * dayInMs;
