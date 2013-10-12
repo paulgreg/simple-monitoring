@@ -1,5 +1,7 @@
 var Timetable = (function(undefined) {
 
+    var msPerDay = 86400000; // 24 * 60 * 60 * 1000;
+
     var buildTimeTable = function(config, currentHour) {
         var daysToShow  = config.common.daysToShow;
         var startAt     = config.common.startAt ? config.common.startAt : 0;
@@ -18,10 +20,9 @@ var Timetable = (function(undefined) {
     };
 
     var fillTimeTable = function(_, config, now, timetable, uptime) {
-        var day = 86400000; // 24 * 60 * 60 * 1000;
         _.each(uptime.results, function(result) {
             var ts = result.timestamp;
-            var dayDiff = parseInt((now - ts) / day, 10);
+            var dayDiff = getDayDiff(ts, now);
             if (dayDiff < timetable.days.length) {
                 var tsDate = new Date(ts);
                 var hour = tsDate.getHours();
@@ -59,10 +60,21 @@ var Timetable = (function(undefined) {
         });
     };
 
+    var getDayDiff = function(past, now) {
+        var n = new Date(now);
+        var p = new Date(past);
+        var dateNow = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+        var datePast = new Date(p.getFullYear(), p.getMonth(), p.getDate());
+
+        var millisBetween = dateNow.getTime() - datePast.getTime();
+        return parseInt(Math.abs(millisBetween / msPerDay), 10);
+    };
+
 
     return {
         'buildTimeTable': buildTimeTable,
-        'fillTimeTable': fillTimeTable
+        'fillTimeTable': fillTimeTable,
+        'getDayDiff': getDayDiff
     };
 })();
 

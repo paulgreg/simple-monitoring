@@ -4,6 +4,41 @@ var Timetable = require('../www/timetable');
 
 describe('Monitor client', function() {
 
+    // Given (common)
+    var minute = 60 * 1000;
+    var hour = 60 * minute;
+    var day = 24 * hour;
+
+    describe('timetable.js#getDayDiff', function() {
+
+        it('should returns 1 for yesterday', function() {
+
+            var now = 1381563674655; // Sat Oct 12 2013 09:41:05 GMT+0200 (CEST) 
+            var yesterdayEvening = now - hour * 10;
+
+            // When
+            var dayDiff = Timetable.getDayDiff(yesterdayEvening, now);
+
+            // Then
+            dayDiff.should.eql(1);
+        });
+
+        it('should returns 0 for today', function() {
+
+            var now = 1381544212676;
+            var justBefore= 1381564431729;
+
+            // When
+            var dayDiff = Timetable.getDayDiff(justBefore, now);
+
+            // Then
+            dayDiff.should.eql(0);
+        });
+    
+    });
+
+
+
     describe('timetable.js#buildTimeTable', function() {
 
         it('should returns a timetable', function() {
@@ -47,10 +82,6 @@ describe('Monitor client', function() {
     describe('timetable.js#fillTimeTable', function() {
 
         // Given (common)
-        var minute = 60 * 1000;
-        var hour = 60 * minute;
-        var day = 24 * hour;
-
         var timetable = {
             "days": [
                 { 
