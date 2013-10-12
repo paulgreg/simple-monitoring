@@ -25,7 +25,7 @@ var Monitor = (function(undefined) {
         var renderBind = _.bind(renderTimetables, this);
         setTimeout(function() {
             $.get('/api/uptimes').then(renderBind);
-        }, this.config.common.checkInterval);
+        }, this.config.common.checkInterval * 1000);
     };
 
     var resizeBoxes = function() {

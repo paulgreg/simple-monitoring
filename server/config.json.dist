@@ -1,6 +1,6 @@
 {
     "common": {                         // Configuration shared between server and client (Web UI)
-        "checkInterval": 30000,         // Interval, in ms, between http requests
+        "checkInterval": 300,           // Interval, in seconds, between http requests
         "flapping": 2,                  // Number of consecutive failure before alerting
         "daysToShow": 2,                // Number of last days to show on web page (and timestamp to keep in memory)
         "startAt": 8,                   // Optional field : time when monitoring starts (24 hours format)
@@ -8,8 +8,8 @@
     },
     "server": {                         // Server only configuration
         "port": 8000,
-        "emailInterval": 120000,        // Optional field : Interval, in ms, between checks if targets were up or down
         "debug": true,                  // Optional field : show full date on /api/uptimes resource
+        "emailInterval": 600,           // Optional field : Interval, in seconds, between checks if targets were up or down
         "smtp": {                       // Optional SMTP configuration for nodemailer,
             "service": "Gmail",         // See https://github.com/andris9/Nodemailer for other options like XOAUTH2, Amazon SES, sendmail...
             "auth": {

@@ -70,7 +70,7 @@ var monitor = function(config, resultsFileName, persistedRresults) {
             if (shouldDoReq) {
                 httpRequestor(target.name, target.url, checkServer);
             }
-            setTimeout(monitorServer.bind(this, target), config.common.checkInterval);
+            setTimeout(monitorServer.bind(this, target), config.common.checkInterval * 1000);
         };
 
         var checkServer = function(name, url, statusCode, size) {
@@ -97,9 +97,9 @@ var monitor = function(config, resultsFileName, persistedRresults) {
 
         var checkIfHasBeenUp = function() {
             _.each(results, function(target, key) {
-                var from = new Date().getTime() - config.server.emailInterval;
+                var from = new Date().getTime() - (config.server.emailInterval*1000);
                 var status = hasBeenUp(target.results, from, config.common.flapping);
-                console.log(key, 'was', (status ? 'UP' : 'DOWN'), 'during last', (config.server.emailInterval/60000).toFixed(0), 'minutes');
+                console.log(key, 'was', (status ? 'UP' : 'DOWN'), 'during last', (config.server.emailInterval/60).toFixed(0), 'minutes');
                 if (status === false && smtpTransport && config.server.emailfrom && config.server.emailto) {
                     var msg = "✘ " + target.url + " is down";
                     var mailOptions = {
@@ -121,7 +121,7 @@ var monitor = function(config, resultsFileName, persistedRresults) {
             });
         };
         if (config.server.emailInterval) {
-            setInterval(checkIfHasBeenUp, config.server.emailInterval);
+            setInterval(checkIfHasBeenUp, config.server.emailInterval*1000);
         }
 
         var dayInMs = 24 * 60 * 60 * 1000;
