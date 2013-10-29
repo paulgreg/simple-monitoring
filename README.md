@@ -8,6 +8,8 @@ A web UI shows each targets status :
    - down / red (flapping is reached)
    - instable / orange (at least one error)
 
+![Example](https://raw.github.com/paulgreg/simple-monitoring/master/monitoring.png)
+
 Optionaly, simple-monitoring could send an email when a host is down.
 
 ## Dependencies
