@@ -9,7 +9,13 @@ var httpRequestor = function(name, url, callback) {
     var requestor = (u.protocol === 'http:') ? http = require("http") : https = require("https");
     var port = (u.protocol === 'http:') ? 80 : 443;
 
-    var options = { 'host': u.hostname, 'port': port, 'path': u.path, method: 'GET'};
+    var ts = ((u.path.indexOf('?') >= 0) ? '&monitortimestamp=' : '?monitortimestamp=') + (+ new Date());
+    var path = u.path+ts;
+    
+    var options = { 'host': u.hostname, 'port': port, 'path': path, method: 'GET'};
+
+    console.log('Monitoring:'+JSON.stringify(options));
+
     //if (config.username && config.password) { options.auth = config.username+':'+config.password; }
     requestor.request(options, function(res) {
         var size= 0;

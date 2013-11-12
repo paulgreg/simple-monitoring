@@ -88,7 +88,6 @@ var monitor = function(config, resultsFileName, persistedRresults) {
         };
 
         config.targets.forEach(function(target) {
-            console.log('Monitoring', target.name, 'on', target.url);
             if (!results[target.name] || !results[target.name].url|| !results[target.name].results) {
                 results[target.name] = { 'url': target.url, 'results': [] };
             }
