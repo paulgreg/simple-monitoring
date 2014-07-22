@@ -13,9 +13,12 @@ run:
 	./node_modules/.bin/nodemon server/launcher.js
 
 start:
-	./node_modules/.bin/forever start --killSignal=SIGINT server/launcher.js
+	pm2 start processes.json
 
 stop:
-	./node_modules/.bin/forever stop --killSignal=SIGINT server/launcher.js
+	pm2 stop processes.json
+
+restart:
+	pm2 restart processes.json
 
 .PHONY: test

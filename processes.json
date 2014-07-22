@@ -2,6 +2,7 @@
     "apps" : [{
         "name"        : "monitoring",
         "script"      : "./server/launcher.js",
+        "args"        : "['--killSignal=SIGINT']",
         "error_file" : "/var/log/node/monitoring-err.log",
         "out_file"   : "/var/log/node/monitoring-out.log",
         "pid_file"   : "./node.pid",
