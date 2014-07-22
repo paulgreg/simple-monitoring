@@ -6,7 +6,8 @@
         "error_file" : "/var/log/node/monitoring-err.log",
         "out_file"   : "/var/log/node/monitoring-out.log",
         "pid_file"   : "./node.pid",
-        "exec_mode"  : "fork_mode",
+        "instances": "1",
+        "exec_mode"  : "cluster_mode",
         "env": {
             "NODE_ENV": "production"
         }
