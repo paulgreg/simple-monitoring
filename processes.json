@@ -6,6 +6,7 @@
         "error_file" : "/var/log/node/monitoring-err.log",
         "out_file"   : "/var/log/node/monitoring-out.log",
         "pid_file"   : "./node.pid",
+        "run_as_user": "www-data",
         "instances": "1",
         "exec_mode"  : "cluster_mode",
         "env": {
