@@ -7,11 +7,11 @@ var httpRequestor = function(name, url, callback) {
     var u = require('url').parse(url);
 
     var requestor = (u.protocol === 'http:') ? http = require("http") : https = require("https");
-    var port = (u.protocol === 'http:') ? 80 : 443;
+    var port = u.port;
 
     var ts = ((u.path.indexOf('?') >= 0) ? '&monitortimestamp=' : '?monitortimestamp=') + (+ new Date());
     var path = u.path+ts;
-    
+
     var options = { 'host': u.hostname, 'port': port, 'path': path, method: 'GET'};
 
     console.log('Monitoring:'+JSON.stringify(options));
